@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.4.0 # Use the ref you want to point at
+    rev: v3.4.0
     hooks:
       - id: trailing-whitespace
       - id: check-yaml
@@ -13,12 +13,12 @@ repos:
       - id: go-vet
       - id: go-lint
       - id: go-imports
-      - id: go-cyclo
-        args: [-over=15]
-      - id: validate-toml
+      #- id: go-cyclo
+      #  args: [-over=15]
+      #- id: validate-toml
       - id: no-go-testing
-      - id: gometalinter
-      - id: golangci-lint
-      - id: go-critic
+      #- id: gometalinter
+      #- id: golangci-lint
+      #- id: go-critic
       - id: go-unit-tests
       - id: go-build
