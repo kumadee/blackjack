@@ -5,3 +5,4 @@ FROM gitpod/workspace-full-vnc
 # RUN brew install bastet
 #
 # More information: https://www.gitpod.io/docs/config-docker/
+RUN pip install pre-commit
