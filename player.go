@@ -2,6 +2,7 @@ package blackjack
 
 import (
 	"fmt"
+	"strings"
 )
 
 // Player represents the user playing the game
@@ -10,14 +11,30 @@ type Player struct {
 	currentScore int
 	wins         int
 	loss         int
-	gamesPlayed  int
 	cardsInHand  []Card
 }
 
+var cardSeparator rune = '|'
+
 // ShowCardsInHand prints the cards of the player
 func (p *Player) ShowCardsInHand() {
-	fmt.Println("Player", p.name, "cards in hand:")
+	var builder strings.Builder
+	var format string = `
+Player %s cards in hand:`
+	fmt.Fprintf(&builder, format, p.name)
 	for _, card := range p.cardsInHand {
-		fmt.Printf("%c ", card.face)
+		builder.WriteRune(card.face)
+		builder.WriteRune(cardSeparator)
 	}
+	fmt.Println(builder.String())
+}
+
+// ShowStats displays the stats of the player
+func (p *Player) ShowStats() {
+	var builder strings.Builder
+	var format string = `
+Player %s stats:
+CurrentScore: %d, Wins: %d, Loss: %d`
+	fmt.Fprintf(&builder, format, p.name, p.currentScore, p.wins, p.loss)
+	fmt.Println(builder.String())
 }
