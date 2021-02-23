@@ -2,4 +2,5 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - command: 'echo "pre-commit install" && pre-commit install'
+  - init: "gp env PIP_USER=false && export PIP_USER=false"
+    command: 'echo "pre-commit install" && pre-commit install'

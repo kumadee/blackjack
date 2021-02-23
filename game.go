@@ -7,7 +7,9 @@ func StartGame() {
 	// Initialize CPU player
 	cpu := Player{name: "CPU"}
 	human.ShowCardsInHand()
+	human.ShowStats()
 	cpu.ShowCardsInHand()
+	cpu.ShowStats()
 	//for {
 	// Deal card to CPU player
 	// Show 1 hidden and 1 face-up card of CPU player
