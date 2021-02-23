@@ -32,8 +32,10 @@ func captureOutput(f func()) string {
 	go func() {
 		var buf bytes.Buffer
 		wg.Done()
-		io.Copy(&buf, reader)
-		out <- buf.String()
+		_, err := io.Copy(&buf, reader)
+		if err == nil {
+			out <- buf.String()
+		}
 	}()
 	wg.Wait()
 	f()
