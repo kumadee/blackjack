@@ -4,3 +4,4 @@ image:
 tasks:
   - init: "gp env PIP_USER=false && export PIP_USER=false"
     command: 'echo "pre-commit install" && pre-commit install'
+  - command: "go get github.com/spf13/cobra/cobra"
