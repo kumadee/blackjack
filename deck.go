@@ -26,7 +26,7 @@ var valueToFaceCardMap = map[uint]rune{
 	10: 'X',
 	11: 'J',
 	12: 'Q',
-	0:  'K',
+	13: 'K',
 }
 
 // NewDeck returns a collection of cards arranged in
@@ -35,12 +35,12 @@ func NewDeck(size uint) Deck {
 	deck := make(Deck, size)
 	for i := 0; i < len(deck); i++ {
 		value := uint((i + 1) % 13)
-		face := valueToFaceCardMap[value]
 		// since we get a remainder of 13
 		// the value should be 13 in card
 		if value == 0 {
 			value = 13
 		}
+		face := valueToFaceCardMap[value]
 		deck[i] = Card{face, value}
 	}
 	return deck

@@ -36,6 +36,9 @@ func TestNewDeck(t *testing.T) {
 		}
 		for index, card := range actual {
 			expectedValue := uint((index + 1) % 13)
+			if expectedValue == 0 {
+				expectedValue = 13
+			}
 			expectedFace := valueToFaceCardMap[expectedValue]
 			if card.face != expectedFace {
 				t.Fatalf("Fail: %s; invalid face card in deck: Deck[%d].face=%c, expected=%c", tc.description, index, card.face, expectedFace)
