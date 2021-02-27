@@ -6,6 +6,18 @@
 
 Console based blackjack game.
 
+To run the CPU and memory profiling, run the tests with the `cpuprofile` and `memprofile` flags.
+```bash
+# Assuming we are already in the directory with go.mod
+go test -benchmem -run=^$ blackjack -bench "^(BenchmarkStartGame)$" -benchmem -cpuprofile cpu.out -memprofile mem.out
+```
+
+To view the profile data in browser, run the below command.
+```bash
+go tool pprof -http=:8080 cpu.out
+go tool pprof -http=:8080 mem.out
+```
+
 # gitpod known issues
 - Run `gp env PIP_USER=false` so that `pre-commit` does not fail with error `Can not perform a '--user' install`.
 Related to https://github.com/gitpod-io/gitpod/issues/1997
