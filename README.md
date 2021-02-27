@@ -1,6 +1,7 @@
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/kumadee/blackjack)
 [![Coverage Status](https://coveralls.io/repos/github/kumadee/blackjack/badge.svg?branch=main&service=github)](https://coveralls.io/github/kumadee/blackjack?branch=main)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/kumadee/blackjack/Go)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=kumadee_blackjack&metric=alert_status)](https://sonarcloud.io/dashboard?id=kumadee_blackjack)
 
 # blackjack
 
