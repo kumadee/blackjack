@@ -43,13 +43,14 @@ func captureOutput(f func()) string {
 	return <-out
 }
 
-var gameCases = []struct {
-	description   string
-	expectedOuput string
-}{
-	{
-		description: "New Game 0",
-		expectedOuput: `
+func TestStartGame(t *testing.T) {
+	var gameCases = []struct {
+		description   string
+		expectedOuput string
+	}{
+		{
+			description: "New Game 0",
+			expectedOuput: `
 Player Human cards in hand:
 
 Player Human stats:
@@ -60,13 +61,25 @@ Player CPU cards in hand:
 Player CPU stats:
 CurrentScore: 0, Wins: 0, Loss: 0
 `,
-	},
-}
-
-func TestStartGame(t *testing.T) {
+		},
+	}
 	for _, tc := range gameCases {
 		output := captureOutput(StartGame)
 		assert.Equalf(t, tc.expectedOuput, output, "%s", tc.description)
+	}
+}
+
+func TestDealCardFromDeck(t *testing.T) {
+	var cases = []struct {
+		description string
+		inputGame   Game
+	}{}
+	for _, tc := range cases {
+		actual := make(Deck, len(tc.inputGame.deck))
+		for i := 0; i < len(tc.inputGame.deck); i++ {
+			actual[i] = tc.inputGame.DealCardFromDeck()
+		}
+		assert.ElementsMatch(t, tc.inputGame.deck, actual, tc.description)
 	}
 }
 

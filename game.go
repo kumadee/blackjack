@@ -16,7 +16,6 @@ type Game struct {
 
 // StartGame runs the game loop
 func StartGame() {
-	var output strings.Builder
 	cardsDeck := NewDeck(13)
 	// Initialize human player
 	human := Player{
@@ -31,19 +30,18 @@ func StartGame() {
 		discard: make([]int, len(cardsDeck)),
 		players: []Player{human, cpu},
 	}
-	for _, player := range game.players {
-		output.WriteString(player.ShowCardsInHand())
-		output.WriteString(player.ShowStats())
-	}
+
 	// Remove timestamp from logger
 	log.SetFlags(0)
-	log.Printf("%s", output.String())
+	log.Printf("%s", game.ShowPlayersStatsAndCards())
 	for {
 		// Deal card to CPU player
 		cpu.UpdateCardsInHand(game.DealCardFromDeck())
 		// Show 1 hidden and 1 face-up card of CPU player
 		// Deal card to human player
 		human.UpdateCardsInHand(game.DealCardFromDeck())
+		//log.Printf("%s", game.ShowPlayersStatsAndCards())
+		//log.Printf("\n%s", "Enter h ('hit') or s ('stay'):")
 		break
 		// Show all face-up card to human player
 		// 'hit' or 'stay' loop start until both CPU & human
@@ -70,4 +68,15 @@ func (game *Game) DealCardFromDeck() Card {
 	}
 	MoveCardToDiscardPile(cardIndex, game.discard)
 	return game.deck[cardIndex]
+}
+
+// ShowPlayersStatsAndCards returns string with all players'
+// stats and cards in hand.
+func (game *Game) ShowPlayersStatsAndCards() string {
+	var output strings.Builder
+	for _, player := range game.players {
+		output.WriteString(player.ShowCardsInHand())
+		output.WriteString(player.ShowStats())
+	}
+	return output.String()
 }
