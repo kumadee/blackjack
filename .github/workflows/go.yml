@@ -2,11 +2,11 @@ name: Go
 
 on:
   push:
-    paths: 
-    - '**.go'  
+    paths:
+    - '**.go'
   pull_request:
     branches: [main]
-    paths: 
+    paths:
     - '**.go'
 
 jobs:
@@ -27,6 +27,12 @@ jobs:
         with:
           # version of golangci-lint to use in form of v1.2 or v1.2.3 or `latest` to use the latest version
           version: latest
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v1.5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Build
         run: go build -v ./...
