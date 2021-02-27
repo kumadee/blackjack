@@ -71,15 +71,28 @@ CurrentScore: 0, Wins: 0, Loss: 0
 
 func TestDealCardFromDeck(t *testing.T) {
 	var cases = []struct {
-		description string
-		inputGame   Game
-	}{}
+		description         string
+		inputGame           Game
+		expectedDiscardPile DiscardPile
+	}{
+		{
+			description: "Deal cards from a deck with 13 cards.",
+			inputGame: Game{
+				deck:    NewDeck(13),
+				discard: make(DiscardPile, 13),
+			},
+			expectedDiscardPile: DiscardPile{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12},
+		},
+	}
 	for _, tc := range cases {
 		actual := make(Deck, len(tc.inputGame.deck))
 		for i := 0; i < len(tc.inputGame.deck); i++ {
 			actual[i] = tc.inputGame.DealCardFromDeck()
 		}
-		assert.ElementsMatch(t, tc.inputGame.deck, actual, tc.description)
+		assert.ElementsMatchf(t, tc.inputGame.deck, actual,
+			"%s - deck test", tc.description)
+		assert.ElementsMatchf(t, tc.expectedDiscardPile, tc.inputGame.discard,
+			"%s - discard pile test", tc.description)
 	}
 }
 

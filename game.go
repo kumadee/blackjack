@@ -27,7 +27,7 @@ func StartGame() {
 	}
 	game := Game{
 		deck:    cardsDeck,
-		discard: make([]int, len(cardsDeck)),
+		discard: make(DiscardPile, len(cardsDeck)),
 		players: []Player{human, cpu},
 	}
 
