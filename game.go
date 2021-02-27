@@ -1,19 +1,22 @@
 package blackjack
 
 import (
+	"log"
 	"math/rand"
+	"strings"
 	"time"
 )
 
 // Game represents the deck and dicard pile of cards.
 type Game struct {
-	deck       Deck
-	discard    DiscardPile
-	cpuPlayers []Player
+	deck    Deck
+	discard DiscardPile
+	players []Player
 }
 
 // StartGame runs the game loop
 func StartGame() {
+	var output strings.Builder
 	cardsDeck := NewDeck(13)
 	// Initialize human player
 	human := Player{
@@ -24,14 +27,17 @@ func StartGame() {
 		name: "CPU",
 	}
 	game := Game{
-		deck:       cardsDeck,
-		discard:    make([]int, len(cardsDeck)),
-		cpuPlayers: []Player{cpu},
+		deck:    cardsDeck,
+		discard: make([]int, len(cardsDeck)),
+		players: []Player{human, cpu},
 	}
-	human.ShowCardsInHand()
-	human.ShowStats()
-	cpu.ShowCardsInHand()
-	cpu.ShowStats()
+	for _, player := range game.players {
+		output.WriteString(player.ShowCardsInHand())
+		output.WriteString(player.ShowStats())
+	}
+	// Remove timestamp from logger
+	log.SetFlags(0)
+	log.Printf("%s", output.String())
 	for {
 		// Deal card to CPU player
 		cpu.UpdateCardsInHand(game.DealCardFromDeck())

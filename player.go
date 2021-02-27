@@ -17,7 +17,7 @@ type Player struct {
 var cardSeparator rune = '|'
 
 // ShowCardsInHand prints the cards of the player
-func (p *Player) ShowCardsInHand() {
+func (p *Player) ShowCardsInHand() string {
 	var builder strings.Builder
 	var format string = `
 Player %s cards in hand:`
@@ -26,17 +26,19 @@ Player %s cards in hand:`
 		builder.WriteRune(card.face)
 		builder.WriteRune(cardSeparator)
 	}
-	fmt.Println(builder.String())
+	builder.WriteRune('\n')
+	return builder.String()
 }
 
 // ShowStats displays the stats of the player
-func (p *Player) ShowStats() {
+func (p *Player) ShowStats() string {
 	var builder strings.Builder
 	var format string = `
 Player %s stats:
-CurrentScore: %d, Wins: %d, Loss: %d`
+CurrentScore: %d, Wins: %d, Loss: %d
+`
 	fmt.Fprintf(&builder, format, p.name, p.currentScore, p.wins, p.loss)
-	fmt.Println(builder.String())
+	return builder.String()
 }
 
 // UpdateCardsInHand updates the player's cards
