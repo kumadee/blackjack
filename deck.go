@@ -50,6 +50,8 @@ func NewDeck(size uint) Deck {
 // discarded pile of cards otherwise false.
 func CardExistsInDiscardPile(cardIndex int, pile DiscardPile) bool {
 	for _, discardValue := range pile {
+		// negative card index is returned true, because
+		// we want to always draw a new card in this case.
 		if cardIndex == discardValue || cardIndex < 0 {
 			return true
 		} else if discardValue < 0 {
