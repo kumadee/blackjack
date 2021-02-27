@@ -3,11 +3,13 @@ name: Go
 on:
   push:
     paths:
-    - '**.go'
+      - "**.go"
+      - "sonar-project.properties"
   pull_request:
     branches: [main]
     paths:
-    - '**.go'
+      - "**.go"
+      - "sonar-project.properties"
 
 jobs:
   build:
