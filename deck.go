@@ -84,6 +84,9 @@ func MoveCardToDiscardPile(cardIndex int, pile DiscardPile) {
 // CheckDiscardPileFull checks if the dicard pile is full
 // i.e., no further cards can be dealt from deck
 func CheckDiscardPileFull(pile DiscardPile) bool {
+	if cap(pile) == 0 || len(pile) == 0 {
+		return false
+	}
 	for _, discardValue := range pile {
 		if discardValue < 0 {
 			// negative value represents that discard pile is not full

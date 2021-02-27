@@ -132,3 +132,40 @@ func TestCardExistsInDiscardPile(t *testing.T) {
 			tc.description)
 	}
 }
+
+func TestCheckDiscardPileFull(t *testing.T) {
+	var cases = []struct {
+		description string
+		pile        DiscardPile
+		expected    bool
+	}{
+		{
+			description: "Discard pile empty",
+			expected:    false,
+		},
+		{
+			description: "Discard pile is full",
+			pile:        DiscardPile{5, 7, 3, 4, 2, 1, 0, 6},
+			expected:    true,
+		},
+		{
+			description: "1. Dicard pile is partially filled",
+			pile:        DiscardPile{5, 7, 3, 4, 2, 1, 0, -1},
+			expected:    false,
+		},
+		{
+			description: "2. Dicard pile is partially filled",
+			pile:        DiscardPile{5, 7, 3, -1, 2, 1, 0, -1},
+			expected:    false,
+		},
+		{
+			description: "Dicard pile is not filled",
+			pile:        DiscardPile{-100, -1, -1, -1},
+			expected:    false,
+		},
+	}
+	for _, tc := range cases {
+		assert.Equal(t, tc.expected,
+			CheckDiscardPileFull(tc.pile), tc.description)
+	}
+}
