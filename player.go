@@ -17,7 +17,7 @@ type Player struct {
 var cardSeparator rune = '|'
 
 // ShowCardsInHand prints the cards of the player
-func (p *Player) ShowCardsInHand() string {
+func (p Player) ShowCardsInHand() string {
 	var builder strings.Builder
 	var format string = `
 Player %s cards in hand:`
@@ -31,7 +31,7 @@ Player %s cards in hand:`
 }
 
 // ShowStats displays the stats of the player
-func (p *Player) ShowStats() string {
+func (p Player) ShowStats() string {
 	var builder strings.Builder
 	var format string = `
 Player %s stats:
