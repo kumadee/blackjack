@@ -5,13 +5,14 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
 	"sync"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func captureOutput(f func()) string {
+func captureOutput(f func(io.Reader), rd io.Reader) string {
 	reader, writer, err := os.Pipe()
 	if err != nil {
 		panic(err)
@@ -38,7 +39,7 @@ func captureOutput(f func()) string {
 		}
 	}()
 	wg.Wait()
-	f()
+	f(rd)
 	writer.Close()
 	return <-out
 }
@@ -47,6 +48,7 @@ func TestStartGame(t *testing.T) {
 	var gameCases = []struct {
 		description   string
 		expectedOuput string
+		rd            io.Reader
 	}{
 		{
 			description: "New Game 0",
@@ -61,11 +63,12 @@ Player CPU cards in hand:
 Player CPU stats:
 CurrentScore: 0, Wins: 0, Loss: 0
 `,
+			rd: strings.NewReader("quit\n"),
 		},
 	}
 	for _, tc := range gameCases {
-		output := captureOutput(StartGame)
-		assert.Equalf(t, tc.expectedOuput, output, "%s", tc.description)
+		output := captureOutput(StartGame, tc.rd)
+		assert.Contains(t, output, tc.expectedOuput, tc.description)
 	}
 }
 
@@ -98,6 +101,6 @@ func TestDealCardFromDeck(t *testing.T) {
 
 func BenchmarkStartGame(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		StartGame()
+		StartGame(strings.NewReader("stay\n"))
 	}
 }

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"blackjack"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -14,7 +15,7 @@ var startCmd = &cobra.Command{
 Human player can provide the input from keyboard.
 CPU player is automatically inputted by the game.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		blackjack.StartGame()
+		blackjack.StartGame(os.Stdin)
 	},
 }
 
