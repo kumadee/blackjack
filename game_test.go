@@ -204,7 +204,7 @@ func TestRoundWinner(t *testing.T) {
 
 func BenchmarkStartGame(b *testing.B) {
 	for i := 0; i < b.N; i++ {
+		// benchmark for one round
 		StartGame(strings.NewReader("stay\nquit\n"))
-		break
 	}
 }
