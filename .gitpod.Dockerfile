@@ -9,4 +9,4 @@ RUN pip install pre-commit && \
         sudo apt-get -q update && \
         sudo apt-get install -yq graphviz && \
         sudo rm -rf /var/lib/apt/lists/* && \
-        sudo curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b /usr/local/bin v1.37.1
+        curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b /usr/local/bin v1.37.1
