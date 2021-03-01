@@ -1,13 +1,13 @@
 name: Gitpod-image-build
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   push:
-    paths: 
+    paths:
     - '.gitpod.Dockerfile'
   pull_request:
     branches: [ main ]
-    paths: 
+    paths:
     - '.gitpod.Dockerfile'
 
 jobs:
