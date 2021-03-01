@@ -8,4 +8,5 @@ FROM gitpod/workspace-full
 RUN pip install pre-commit && \
         sudo apt-get -q update && \
         sudo apt-get install -yq graphviz && \
-        sudo rm -rf /var/lib/apt/lists/*
+        sudo rm -rf /var/lib/apt/lists/* && \
+        curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.37.1
