@@ -49,3 +49,13 @@ func (p *Player) UpdateCardsInHand(cards ...Card) {
 		p.currentScore += card.value
 	}
 }
+
+// ResetCardsInHand resets the cards to empty
+func (p *Player) ResetCardsInHand() {
+	p.cardsInHand = Deck{}
+}
+
+// ResetCurrentScore resets the current score to zero
+func (p *Player) ResetCurrentScore() {
+	p.currentScore = 0
+}

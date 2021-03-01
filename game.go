@@ -30,6 +30,9 @@ func StartGame(read io.Reader) {
 		discard: make(DiscardPile, len(cardsDeck)),
 		players: []Player{{name: "Human"}, {name: "CPU"}},
 	}
+	defer func() {
+		log.Printf("\nTotal rounds played: %d.\n", game.Rounds())
+	}()
 	human := &game.players[0]
 	cpu := &game.players[1]
 	// Remove timestamp from logger
@@ -90,6 +93,17 @@ func StartGame(read io.Reader) {
 		default:
 			log.Printf("\nPlayer %s wins the round.\n", name)
 		}
+		game.RoundReset()
+		// Check if user wants to quit
+		log.Printf("\n%s", "Enter q ('quit'):")
+		input, err := reader.ReadString('\n')
+		if err != nil {
+			panic(err)
+		}
+		switch strings.ToLower(strings.TrimRight(input, "\n")) {
+		case "q", "quit":
+			return
+		}
 	}
 }
 
@@ -110,12 +124,13 @@ func (game *Game) DealCardFromDeck() Card {
 
 // RoundWinner is used to find the game round winner
 func (game *Game) RoundWinner() (string, error) {
-	var highScore uint = 0
+	var highScore uint
 	var winner *Player
-	for _, player := range game.players {
+	for index := range game.players {
+		player := &game.players[index]
 		if player.currentScore > highScore && player.currentScore <= 21 {
 			highScore = player.currentScore
-			winner = &player
+			winner = player
 		}
 		// Since there is only one winner, we intentionally update
 		// the loss for all players in this loop. If we successfully
@@ -147,8 +162,31 @@ func CPUHit(p *Player) bool {
 	if p.currentScore >= 21 {
 		return false
 	}
-	if len(p.cardsInHand) > 2 && p.currentScore >= 17 {
+	if len(p.cardsInHand) >= 2 && p.currentScore >= 17 {
 		return false
 	}
 	return true
+}
+
+// RoundReset reset the cards in hand
+// for all players and their score.
+func (game *Game) RoundReset() {
+	for index := range game.players {
+		player := &game.players[index]
+		player.ResetCardsInHand()
+		player.ResetCurrentScore()
+	}
+}
+
+// Rounds returns the number of rounds played
+func (game *Game) Rounds() uint {
+	var rounds uint
+	for _, player := range game.players {
+		// All players will have played same number
+		// of rounds. Hence, we check only for one
+		// players loss & wins.
+		rounds = player.loss + player.wins
+		break
+	}
+	return rounds
 }

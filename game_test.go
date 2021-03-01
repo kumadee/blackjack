@@ -99,8 +99,112 @@ func TestDealCardFromDeck(t *testing.T) {
 	}
 }
 
+func TestRoundWinner(t *testing.T) {
+	var cases = []struct {
+		description    string
+		game           Game
+		expectedWinner Player
+		expectedError  error
+	}{
+		{
+			description:    "CPU score more than 21 but greater than human's score.",
+			expectedWinner: Player{name: "Human", loss: 0, wins: 1},
+			expectedError:  nil,
+			game: Game{
+				players: []Player{
+					{name: "Human", currentScore: 10},
+					{name: "CPU", currentScore: 25},
+				},
+			},
+		},
+		{
+			description:    "Human score more than 21 but greater than CPU's score.",
+			expectedWinner: Player{name: "CPU", loss: 0, wins: 1},
+			expectedError:  nil,
+			game: Game{
+				players: []Player{
+					{name: "Human", currentScore: 25},
+					{name: "CPU", currentScore: 10},
+				},
+			},
+		},
+		{
+			description:    "Human score greater than CPU and both less than 21.",
+			expectedWinner: Player{name: "Human", loss: 0, wins: 1},
+			expectedError:  nil,
+			game: Game{
+				players: []Player{
+					{name: "Human", currentScore: 11},
+					{name: "CPU", currentScore: 10},
+				},
+			},
+		},
+		{
+			description:    "CPU score greater than Human and both less than 21.",
+			expectedWinner: Player{name: "CPU", loss: 0, wins: 1},
+			expectedError:  nil,
+			game: Game{
+				players: []Player{
+					{name: "Human", currentScore: 17},
+					{name: "CPU", currentScore: 20},
+				},
+			},
+		},
+		{
+			description:    "CPU score greater than Human and equal to 21.",
+			expectedWinner: Player{name: "CPU", loss: 0, wins: 1},
+			expectedError:  nil,
+			game: Game{
+				players: []Player{
+					{name: "Human", currentScore: 17},
+					{name: "CPU", currentScore: 21},
+				},
+			},
+		},
+		{
+			description:    "Human score greater than CPU and equal to 21.",
+			expectedWinner: Player{name: "Human", loss: 0, wins: 1},
+			expectedError:  nil,
+			game: Game{
+				players: []Player{
+					{name: "Human", currentScore: 21},
+					{name: "CPU", currentScore: 14},
+				},
+			},
+		},
+		{
+			description:    "No winner.",
+			expectedWinner: Player{loss: 0, wins: 1},
+			expectedError:  ErrNoWinner,
+			game: Game{
+				players: []Player{
+					{name: "Human", currentScore: 25},
+					{name: "CPU", currentScore: 22},
+				},
+			},
+		},
+	}
+	for _, tc := range cases {
+		name, err := tc.game.RoundWinner()
+		if err == nil {
+			assert.Equalf(t, tc.expectedWinner.name, name, "%s - winner name test", tc.description)
+		}
+		for _, player := range tc.game.players {
+			if player.name == tc.expectedWinner.name {
+				assert.Equalf(t, tc.expectedWinner.loss, player.loss, "%s - Winner loss count test", tc.description)
+				assert.Equalf(t, tc.expectedWinner.wins, player.wins, "%s - Winner wins count test", tc.description)
+			} else {
+				assert.Equalf(t, tc.expectedWinner.loss+1, player.loss, "%s - Loser loss count test", tc.description)
+				assert.Equalf(t, tc.expectedWinner.wins-1, player.wins, "%s - Loser wins count test", tc.description)
+			}
+		}
+		assert.Equalf(t, tc.expectedError, err, "%s - error test", tc.description)
+	}
+}
+
 func BenchmarkStartGame(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		StartGame(strings.NewReader("stay\n"))
+		StartGame(strings.NewReader("stay\nquit\n"))
+		break
 	}
 }
