@@ -52,8 +52,8 @@ func StartGame(read io.Reader) {
 		// says 'stay' or deck is empty
 		humanInput := true
 		cpuInput := true
-	inner:
-		for {
+
+		for cpuInput || humanInput {
 			log.Printf("%s", ShowPlayersStatsAndCards(game.players))
 			if humanInput {
 				log.Printf("\n%s", "Enter h ('hit') or s ('stay') or q ('quit'):")
@@ -72,16 +72,12 @@ func StartGame(read io.Reader) {
 			}
 
 			if cpuInput {
-				switch CPUHit(cpu) {
+				switch CPUHit(*cpu) {
 				case true:
 					cpu.UpdateCardsInHand(game.DealCardFromDeck())
 				default:
 					cpuInput = false
 				}
-			}
-
-			if !(cpuInput || humanInput) {
-				break inner
 			}
 		}
 		// Find and reveal winner
@@ -158,7 +154,7 @@ func ShowPlayersStatsAndCards(players []Player) string {
 
 // CPUHit chooses where hit or stay for a
 // CPU player. If true then hit else stay.
-func CPUHit(p *Player) bool {
+func CPUHit(p Player) bool {
 	if p.currentScore >= 21 {
 		return false
 	}

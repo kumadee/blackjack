@@ -63,7 +63,7 @@ Player CPU cards in hand:
 Player CPU stats:
 CurrentScore: 0, Wins: 0, Loss: 0
 `,
-			rd: strings.NewReader("quit\n"),
+			rd: strings.NewReader("hit\nstay\nquit\n"),
 		},
 	}
 	for _, tc := range gameCases {
