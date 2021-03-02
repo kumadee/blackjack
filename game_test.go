@@ -202,6 +202,83 @@ func TestRoundWinner(t *testing.T) {
 	}
 }
 
+func TestCPUHit(t *testing.T) {
+	var cases = []struct {
+		description string
+		input       Player
+		expected    bool
+	}{
+		{
+			description: "CPU score more than 21",
+			input:       Player{currentScore: 22},
+			expected:    false,
+		},
+		{
+			description: "CPU score equal to 21",
+			input:       Player{currentScore: 21},
+			expected:    false,
+		},
+		{
+			description: "CPU score less than 21, but has less than 2 cards",
+			input: Player{
+				currentScore: 13,
+				cardsInHand: Deck{
+					Card{face: 'K', value: 13},
+				},
+			},
+			expected: true,
+		},
+		{
+			description: "CPU score less than 21 & 17, but has equal to 2 cards",
+			input: Player{
+				currentScore: 14,
+				cardsInHand: Deck{
+					Card{face: 'J', value: 11},
+					Card{face: '3', value: 3},
+				},
+			},
+			expected: true,
+		},
+		{
+			description: "CPU score less than 21 & equal to 17, but has equal to 2 cards",
+			input: Player{
+				currentScore: 17,
+				cardsInHand: Deck{
+					Card{face: '9', value: 9},
+					Card{face: '8', value: 8},
+				},
+			},
+			expected: false,
+		},
+		{
+			description: "CPU score less than 21 & greater than 17, but has equal to 2 cards",
+			input: Player{
+				currentScore: 19,
+				cardsInHand: Deck{
+					Card{face: '9', value: 9},
+					Card{face: 'X', value: 10},
+				},
+			},
+			expected: false,
+		},
+		{
+			description: "CPU score less than 21 & greater than 17, and has more than 2 cards",
+			input: Player{
+				currentScore: 20,
+				cardsInHand: Deck{
+					Card{face: '9', value: 9},
+					Card{face: 'X', value: 10},
+					Card{face: 'A', value: 1},
+				},
+			},
+			expected: false,
+		},
+	}
+	for _, tc := range cases {
+		assert.Equal(t, tc.expected, CPUHit(tc.input), tc.description)
+	}
+}
+
 func BenchmarkStartGame(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		// benchmark for one round
